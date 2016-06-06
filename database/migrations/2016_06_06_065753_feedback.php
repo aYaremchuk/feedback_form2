@@ -12,7 +12,7 @@ class Feedback extends Migration
      */
     public function up()
     {
-        Schema::create('feedback', function (Blueprint $table) {
+        Schema::create('feedbacks', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name');
             $table->date('birthday');
@@ -29,6 +29,6 @@ class Feedback extends Migration
      */
     public function down()
     {
-        Schema::drop('feedback');
+        Schema::drop('feedbacks');
     }
 }
