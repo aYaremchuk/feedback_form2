@@ -36,9 +36,22 @@ class FeedbackController extends Controller
      */
     public function store()
     {
-        $feedback = Request::all();
-        Feedback::create($feedback);
-        return redirect('feedbacks');
+        $input = Request::all();
+        // prepare file for saving into DB
+        $filename = $input['attachment']->getClientOriginalName();
+        $destination_path = base_path() . '/public/uploads/';
+        $safety_file_name = preg_replace('/\s+/', '_', $filename);
+        Request::file('attachment')->move( $destination_path, $safety_file_name);
+        $input['attachment'] = '/uploads/'. $safety_file_name;
+        // change meeting_date to correct format
+        $input['meeting_date'] = date("Y-m-d H:i:s", strtotime($input['meeting_date']));
+        $input['birthday'] = date("Y-m-d", strtotime($input['birthday']));
+
+        $feedback = new Feedback($input);
+        $feedback -> save();
+
+        $message = 'Mы ждем вас в '. date('H:i d-m-Y', strtotime($feedback->meeting_date));
+        return redirect('feedbacks/'.$feedback->id)->withMessage($message);
     }
     /**
      * Display the specified resource.
@@ -80,6 +93,7 @@ class FeedbackController extends Controller
      */
     public function destroy($id)
     {
-        //
+        Feedback::find($id)->delete();
+        return redirect('feedbacks');
     }
 }

@@ -1,8 +1,9 @@
-@extends('layout/template')
+@extends('layout/default')
 
 @section('content')
-    <h1>Feedbacks</h1>
-    <a href="{{url('/feedbacks/create')}}" class="btn btn-success">Create Feedback</a>
+    <script src="/js/feedbacks.js"></script>
+
+    <a href="/"><h1>Feedbacks</h1></a>
     <hr>
     <table class="table table-striped table-bordered table-hover">
         <thead>
@@ -12,7 +13,7 @@
             <th>Birthday</th>
             <th>Attachment</th>
             <th>Meeting</th>
-            <th colspan="3">Actions</th>
+            <th>Actions</th>
         </tr>
         </thead>
         <tbody>
@@ -21,14 +22,12 @@
                 <td>{{ $feedback->id }}</td>
                 <td>{{ $feedback->name }}</td>
                 <td>{{ $feedback->birthday}}</td>
-                <td>{{ $feedback->attachment }}</td>
-                <td>{{ $feedback->meeting }}</td>
-                {{--<td><img src="{{asset('upload/'.$feedback->image.'.jpg')}}" height="35" width="30"></td>--}}
-                <td><a href="{{url('feedbacks',$feedback->id)}}" class="btn btn-primary">Read</a></td>
-                <td><a href="{{route('feedbacks.edit',$feedback->id)}}" class="btn btn-warning">Update</a></td>
+                <td> <a href={{$feedback->attachment}}>Open file</a> </td>
+                <td>{{ $feedback->meeting_date }}</td>
                 <td>
-                    {!! Form::open(['method' => 'DELETE', 'route'=>['feedbacks.destroy', $feedback->id]]) !!}
-                    {!! Form::submit('Delete', ['class' => 'btn btn-danger']) !!}
+                    {!! Form::open(['method' => 'DELETE', 'route'=>['feedbacks.destroy', $feedback->id],
+                    'onsubmit' => 'return ConfirmDelete()']) !!}
+                      {!! Form::submit('Delete', ['class' => 'btn btn-danger']) !!}
                     {!! Form::close() !!}
                 </td>
             </tr>
