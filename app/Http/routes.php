@@ -16,4 +16,5 @@
 //});
 
 Route::get('/', 'FeedbackController@create');
-Route::resource('feedbacks','FeedbackController');
+Route::resource('feedbacks','FeedbackController',
+                ['except' => ['update', 'edit']]);

@@ -34,7 +34,7 @@ class FeedbackController extends Controller
      *
      * @return Response
      */
-    public function store()
+    public function store(Requests\StoreFeedbackPostRequest $request)
     {
         $input = Request::all();
         // prepare file for saving into DB
